@@ -13,7 +13,7 @@ const GridItem = (characters) => {
       {
         characters.map(element => {
           return(
-            <Grid xs={4} md={2} lg={1.2} xl={1.2}><MockItem key={element.id} element={element} /></Grid>
+            <MockItem key={element.id} element={element} />
           )
         })
       }      
@@ -21,20 +21,23 @@ const GridItem = (characters) => {
   )
 }
 
-export default function Home({characterData, numberOfCharacters}) {
-  const [offset, setOffset] = useState(2)
+export default function Home({characterData, dataCount}) {
+  const [offset, setOffset] = useState(200)
   const [characters, setCharacters] = useState(characterData);
   const [hasMore, setHasMore] = useState(true);
+  const [numberOfCharacters, setNumberOfCharacters] = useState(dataCount)
 
   const getMoreCharacters = async () => {
+    console.log("Emre")
     let characterData = []
     let data = await getMarvelCharacters(offset);
 
     data.data.forEach(element => {
       characterData.push(createCharacterBasic(element))
     })
-    setCharacters((characters) => [...characters, ...characterData]);
-    let newOffset = offset + 2
+    let newData = characters.concat(characterData)
+    setCharacters(newData)
+    let newOffset = offset + 200
     setOffset(newOffset)
   }
 
@@ -88,6 +91,6 @@ export async function getServerSideProps() {
   data.data.forEach(element => {
     characterData.push(createCharacterBasic(element))
   })
-  let numberOfCharacters = data.numberOfCharacters
-  return { props: { characterData, numberOfCharacters }, };
+  let dataCount = data.numberOfCharacters
+  return { props: { characterData, dataCount }, };
 }
