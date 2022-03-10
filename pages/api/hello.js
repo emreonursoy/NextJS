@@ -13,7 +13,7 @@ export default async function getMarvelCharacters(offset) {
     let hash = md5(ts+privateKey+publicKey)
     for(let i=0; i<2; i++){
         urls.push(
-            "http://gateway.marvel.com/v1/public/characters?orderBy=name&limit=100&offset=" + (offset+skip) + "&" + "ts=" + ts + "&apikey=" + publicKey + "&hash=" + hash
+            "https://gateway.marvel.com/v1/public/characters?orderBy=name&limit=100&offset=" + (offset+skip) + "&" + "ts=" + ts + "&apikey=" + publicKey + "&hash=" + hash
         )
         skip = skip + 100
     }
