@@ -5,13 +5,13 @@ import { Grid, Loading, Text, Input, Row } from '@nextui-org/react'
 import { MockItem } from '../components/MockItem'
 import { useEffect, useState } from 'react'
 import { createCharacterBasic } from '../helpers/helper'
-import InfiniteScroll from "react-infinite-scroll-component";
 import Image from 'next/image'
 import { GiSpiderMask } from "react-icons/gi";
 import { useSelector, useDispatch } from 'react-redux'
 import { loadData, loadingDataFailure } from '../store'
 import icon from '../public/spiderman.png'
 import { DebounceInput } from 'react-debounce-input'
+import InfiniteScroll from 'react-infinite-scroller';
 
 const GridItem = (characters) => {
   return (
@@ -28,11 +28,10 @@ const GridItem = (characters) => {
 }
 
 export default function Home({ characterData, dataCount }) {
+  console.log(dataCount)
   const dispatch = useDispatch()
-  const [offset, setOffset] = useState(200)
   const [characters, setCharacters] = useState(characterData);
-  const [hasMore, setHasMore] = useState(true);
-  const [numberOfCharacters, setNumberOfCharacters] = useState(dataCount)
+  const [searchInput, setSearchInput] = useState("")
 
   dispatch(loadData(characterData))
   const data = useSelector((state) => state.data)
@@ -40,21 +39,16 @@ export default function Home({ characterData, dataCount }) {
 
   const getMoreCharacters = async () => {
     let characterData = []
-    let data = await getMarvelCharacters(offset);
+    let data = await getMarvelCharacters(characters.length);
 
     data.data.forEach(element => {
       characterData.push(createCharacterBasic(element))
     })
+
     let newData = characters.concat(characterData)
     setCharacters(newData)
     dispatch(loadData(newData))
-    let newOffset = offset + 200
-    setOffset(newOffset)
   }
-
-  useEffect(() => {
-    setHasMore(numberOfCharacters > characters.length ? true : false);
-  }, [characters]);
 
   return (
     <div className={styles.container}>
@@ -74,12 +68,21 @@ export default function Home({ characterData, dataCount }) {
             </Text>
           </div>
           <div style={{ position: "absolute", right: "15px", paddingTop: "30px" }}>
-          <Input
+            <Input
               clearable
               underlined
               color="error"
+              value={searchInput}
               labelPlaceholder="Search a Marvel character"
-              contentRight={<GiSpiderMask filled width="16" height="10" fill="#DF1F2D" />}
+              contentRight={<GiSpiderMask width="16" height="10" fill="#DF1F2D" />}
+            />
+            <DebounceInput
+              debounceTimeout={300}
+              value={searchInput}
+              forceNotifyByEnter={true}
+              forceNotifyOnBlur={true}
+              minLength={1}
+              onChange={(e) => setSearchInput(e.target.value)}
             />
           </div>
         </Row>
@@ -87,18 +90,13 @@ export default function Home({ characterData, dataCount }) {
       <main className={styles.main}>
         {
           <InfiniteScroll
-            dataLength={numberOfCharacters}
-            next={getMoreCharacters}
-            hasMore={hasMore}
-            loader={<div style={{ textAlign: "center" }}><Loading>Loading</Loading></div>}
-            endMessage={
-              <p style={{ textAlign: "center" }}>
-                <b>Yay! You have seen it all</b>
-              </p>
-            }
-          >
-            {GridItem(characters)}
-          </InfiniteScroll>
+          pageStart={1}
+          loadMore={getMoreCharacters}
+          hasMore={dataCount > characters.length ? true : false}
+          loader={<div style={{ textAlign: "center" }}><Loading>Loading</Loading></div>}
+      >
+          {GridItem(characters)}
+      </InfiniteScroll>
         }
       </main>
     </div>
