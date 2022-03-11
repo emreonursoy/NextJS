@@ -6,6 +6,11 @@ import { MockItem } from '../components/MockItem'
 import { useEffect, useState } from 'react'
 import { createCharacterBasic } from '../helpers/helper'
 import InfiniteScroll from "react-infinite-scroll-component";
+import Image from 'next/image'
+
+import { useSelector, useDispatch } from 'react-redux'
+import { loadData, loadingDataFailure } from '../store'
+
 
 const GridItem = (characters) => {
   return (
@@ -22,13 +27,18 @@ const GridItem = (characters) => {
 }
 
 export default function Home({characterData, dataCount}) {
+  const dispatch = useDispatch()
   const [offset, setOffset] = useState(200)
   const [characters, setCharacters] = useState(characterData);
   const [hasMore, setHasMore] = useState(true);
   const [numberOfCharacters, setNumberOfCharacters] = useState(dataCount)
 
+  dispatch(loadData(characterData))
+  const data = useSelector((state) => state.data)
+  const error = useSelector((state) => state.error)
+  
+
   const getMoreCharacters = async () => {
-    console.log("Emre")
     let characterData = []
     let data = await getMarvelCharacters(offset);
 
@@ -37,6 +47,7 @@ export default function Home({characterData, dataCount}) {
     })
     let newData = characters.concat(characterData)
     setCharacters(newData)
+    dispatch(loadData(newData))
     let newOffset = offset + 200
     setOffset(newOffset)
   }
@@ -86,11 +97,11 @@ export default function Home({characterData, dataCount}) {
 export async function getServerSideProps() {
   let characterData = []
 
-  let data = await getMarvelCharacters(0);
+  let marvelData = await getMarvelCharacters(0);
   
-  data.data.forEach(element => {
+  marvelData.data.forEach(element => {
     characterData.push(createCharacterBasic(element))
   })
-  let dataCount = data.numberOfCharacters
+  let dataCount = marvelData.numberOfCharacters
   return { props: { characterData, dataCount }, };
 }
