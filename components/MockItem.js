@@ -3,8 +3,8 @@ import { CharacterDetailModal } from '../components/CharacterDetailModal'
 
 export function MockItem(props) {
   return (
-    <Grid xs={4} md={2} lg={1.2} xl={1.2} key={props.element.id}>
-      <Card hoverable cover css={{ w: '100%', p: 1 }} key={props.element.id}>
+    <Grid xs={6} md={2} lg={1.2} xl={1.5} key={props.element.id}>
+      <Card hoverable cover css={{ w: '100%', p: 0 }} key={props.element.id}>
         <Card.Header css={{ position: 'absolute', zIndex: 1, top: 5 }}>
           <Col>
             <Text h3 color="white">

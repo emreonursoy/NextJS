@@ -3,19 +3,19 @@ import { createStore, applyMiddleware } from 'redux'
 import { composeWithDevTools } from 'redux-devtools-extension'
 import { persistReducer } from 'redux-persist'
 import storage from 'redux-persist/lib/storage'
+import {createCharacterBasic} from './helpers/helper'
 
 let store
 
 const dataInitialState = {
   lastUpdate: 0,
   light: false,
-  count: 0,
-  data: [],
+  totalCount: 0,
+  characters: [],
   error: null,
 }
 
 export const actionTypes = {
-
   LOAD_DATA: 'LOAD_DATA',
   LOADING_DATA_FAILURE: 'LOADING_DATA_FAILURE',
 }
@@ -24,9 +24,14 @@ export const actionTypes = {
 export const reducer = (state = dataInitialState, action) => {
   switch (action.type) {
     case actionTypes.LOAD_DATA:
+      const { data, numberOfCharacters} = action.payload;
+
+      const basicData = data.map(createCharacterBasic);
+
       return {
         ...state,
-        data: action.data,
+        characters: [...state.characters, ...basicData],
+        totalCount: numberOfCharacters
       }
     case actionTypes.LOADING_DATA_FAILURE:
       return { ...state, error: true }
@@ -37,8 +42,8 @@ export const reducer = (state = dataInitialState, action) => {
 
 // ACTIONS
 
-export const loadData = (data) => {
-  return { type: actionTypes.LOAD_DATA, data }
+export const loadData = (payload) => {
+  return { type: actionTypes.LOAD_DATA, payload }
 }
 
 export const loadingDataFailure = () => {
@@ -48,7 +53,7 @@ export const loadingDataFailure = () => {
 const persistConfig = {
   key: 'primary',
   storage,
-  whitelist: ['data'], // place to select which state you want to persist
+  whitelist: ['characters','totalCount'], // place to select which state you want to persist
 }
 
 const persistedReducer = persistReducer(persistConfig, reducer)
