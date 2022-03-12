@@ -1,6 +1,6 @@
 import { Modal, Button, Text, Card, Grid, Row, Col, Link, Spacer } from '@nextui-org/react';
 import { FiExternalLink } from "react-icons/fi";
-import { getCharacterComics, getCharacterSeries } from '../pages/api/hello'
+import { getCharacterComics, getCharacterSeries } from '../pages/api'
 import { useEffect, useCallback, useState } from 'react'
 import { createComicsBasic } from '../helpers/helper'
 import ReactDataGrid from '@inovua/reactdatagrid-community'

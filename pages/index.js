@@ -1,6 +1,6 @@
 import Head from 'next/head'
 import styles from '../styles/Home.module.css'
-import { getMarvelCharacters, getMarvelCharactersSearchResult } from './api/hello'
+import { getMarvelCharacters, getMarvelCharactersSearchResult } from './api'
 import { Grid, Loading, Text, Input, Row } from '@nextui-org/react'
 import { MockItem } from '../components/MockItem'
 import { useEffect, useCallback, useState } from 'react'
@@ -67,17 +67,12 @@ export default function Home() {
   }, [getMarvelCharactersSearchResult, searchedCharacters, searchedCharactersCount]);
 
   const search = useCallback(debounce((term) => {
-    console.log('searching...', term);
+    console.log("searching... ", term)
     getNextSearchedCharacters(term)
   }, 300), []);
 
   const onInputChange = useCallback((e) => {
-    if (e.target.value.length > 0) {
-      search(e.target.value);
-    }
-    else {
-      setSearchedCharacters([])
-    }
+    search(e.target.value);
   }, [search])
 
   return (
