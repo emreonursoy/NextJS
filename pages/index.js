@@ -38,7 +38,6 @@ export default function Home() {
 
   useEffect(async () => {
     if (characters.length === 0) {
-      //getNextCharacters(0);
       var response = await getMarvelCharacters(length);
       dispatch(loadData(response))
     }
@@ -67,7 +66,6 @@ export default function Home() {
   }, [getMarvelCharactersSearchResult, searchedCharacters, searchedCharactersCount]);
 
   const search = useCallback(debounce((term) => {
-    console.log("searching... ", term)
     getNextSearchedCharacters(term)
   }, 300), []);
 

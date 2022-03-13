@@ -3,9 +3,7 @@ import md5 from 'md5'
 
 const baseUrl = "https://gateway.marvel.com/v1/public/characters"
 const ts = Date.now();
-const publicKey = "0a8f644b4d294b4f1d452372bb34e10a"
-const privateKey = "c8bec8a7577d2a80f6e7fba5e9697ea8fb4ee1c7"
-const hash = md5(ts + privateKey + publicKey)
+const hash = md5(ts + process.env.PRIVATE_KEY + process.env.PUBLIC_KEY)
 
 export async function getMarvelCharacters(offset) {
     let res
@@ -14,7 +12,7 @@ export async function getMarvelCharacters(offset) {
     let skip = 0
     for (let i = 0; i < 2; i++) {
         urls.push(
-            baseUrl + "?orderBy=name&limit=100&offset=" + (offset + skip) + "&" + "ts=" + ts + "&apikey=" + publicKey + "&hash=" + hash
+            baseUrl + "?orderBy=name&limit=100&offset=" + (offset + skip) + "&" + "ts=" + ts + "&apikey=" + process.env.PUBLIC_KEY + "&hash=" + hash
         )
         skip = skip + 100
     }
@@ -39,7 +37,7 @@ export async function getMarvelCharactersSearchResult(offset, nameStartsWith) {
         let skip = 0
         for (let i = 0; i < 2; i++) {
             urls.push(
-                baseUrl + "?nameStartsWith=" + nameStartsWith + "&orderBy=name&limit=100&offset=" + (offset + skip) + "&" + "ts=" + ts + "&apikey=" + publicKey + "&hash=" + hash
+                baseUrl + "?nameStartsWith=" + nameStartsWith + "&orderBy=name&limit=100&offset=" + (offset + skip) + "&" + "ts=" + ts + "&apikey=" + process.env.PUBLIC_KEY + "&hash=" + hash
             )
             skip = skip + 100
         }
@@ -67,7 +65,7 @@ export async function getMarvelCharactersSearchResult(offset, nameStartsWith) {
 }
 
 export async function getCharacterComics(offset, characterId) {
-    const url = baseUrl + "/" + characterId + "/comics?" + "orderBy=onsaleDate&limit=100&offset=" + offset + "&" + "ts=" + ts + "&apikey=" + publicKey + "&hash=" + hash
+    const url = baseUrl + "/" + characterId + "/comics?" + "orderBy=onsaleDate&limit=100&offset=" + offset + "&" + "ts=" + ts + "&apikey=" + process.env.PUBLIC_KEY + "&hash=" + hash
     const res = await fetch(url)
     const data = await res.json()
     const numberOfComics = data.data.total
@@ -80,7 +78,7 @@ export async function getCharacterComics(offset, characterId) {
 }
 
 export async function getCharacterSeries(offset, characterId) {
-    const url = baseUrl + "/" + characterId + "/series?" + "orderBy=startYear&limit=100&offset=" + offset + "&" + "ts=" + ts + "&apikey=" + publicKey + "&hash=" + hash
+    const url = baseUrl + "/" + characterId + "/series?" + "orderBy=startYear&limit=100&offset=" + offset + "&" + "ts=" + ts + "&apikey=" + process.env.PUBLIC_KEY + "&hash=" + hash
     const res = await fetch(url)
     const data = await res.json()
     const numberOfSeries = data.data.total
