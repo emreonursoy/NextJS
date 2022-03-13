@@ -2,7 +2,7 @@ import '../styles/globals.css'
 import { NextUIProvider } from '@nextui-org/react';
 import { PersistGate } from 'redux-persist/integration/react'
 import { persistStore } from 'redux-persist'
-import { useStore } from '../store'
+import { useStore } from '../store/useStore'
 import { Provider } from 'react-redux'
 import icon from '../public/spidey_animated.gif'
 import Image from 'next/image'

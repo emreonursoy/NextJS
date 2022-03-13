@@ -8,7 +8,7 @@ import { createCharacterBasic } from '../helpers/helper'
 import Image from 'next/image'
 import { GiSpiderMask } from "react-icons/gi";
 import { useSelector, useDispatch } from 'react-redux'
-import { loadData, loadingDataFailure } from '../store'
+import { loadData, loadingDataFailure } from '../store/useStore'
 import icon from '../public/spiderman.png'
 import InfiniteScroll from 'react-infinite-scroller';
 import { debounce } from 'lodash';

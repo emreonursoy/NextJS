@@ -7,10 +7,6 @@ To access documentation you can visit [https://developer.marvel.com/](https://de
 
 To run the project, you need to open a developer account from [https://developer.marvel.com/](https://developer.marvel.com/), get your developer private and public key, and set it into .env.local file, which has to locate at the root of your project folder, as "PRIVATE_KEY" and "PUBLIC_KEY"
 
-## Run Unit Test For Api
-
-To run API tests, you need to define "PRIVATE_KEY" and "PUBLIC_KEY" statically to api/index.js otherwise, it will not succeed
-
 ## Getting Started
 
 First, run the development server:
