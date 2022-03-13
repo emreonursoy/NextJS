@@ -6,5 +6,4 @@ const nextConfig = {
     PUBLIC_KEY: process.env.PUBLIC_KEY,
   },
 }
-
 module.exports = nextConfig

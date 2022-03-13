@@ -1,5 +1,6 @@
 
 import md5 from 'md5'
+import fetch from 'cross-fetch';
 
 const baseUrl = "https://gateway.marvel.com/v1/public/characters"
 const ts = Date.now();
@@ -61,7 +62,6 @@ export async function getMarvelCharactersSearchResult(offset, nameStartsWith) {
         }
         return returnElement
     }
-    
 }
 
 export async function getCharacterComics(offset, characterId) {
